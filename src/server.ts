@@ -1,11 +1,6 @@
-import fastify from 'fastify'
+import app from './app'
+import './database'
 
-const server = fastify()
-
-server.get('/hello', () => {
-  return 'world'
-})
-
-server.listen({ port: 3333 }).then(() => {
-  console.log('Server listening on port 3333')
+app.listen({ port: 3030 }, () => {
+  console.log('🚀 Server running at port 3030')
 })

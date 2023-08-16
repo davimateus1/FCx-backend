@@ -10,8 +10,10 @@
     "lint": "eslint src --ext .ts --fix"
   },
   "devDependencies": {
+    "@prisma/client": "^5.1.1",
     "@rocketseat/eslint-config": "^2.1.0",
     "eslint": "^8.47.0",
+    "prisma": "^5.1.1",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   },
