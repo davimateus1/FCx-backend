@@ -18,6 +18,7 @@ model User {
   birthDate  DateTime
   motherName String
   status     String
+  deleted    Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
