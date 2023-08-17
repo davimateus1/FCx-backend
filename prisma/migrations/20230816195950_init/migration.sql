@@ -8,6 +8,7 @@ CREATE TABLE "User" (
     "phone" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
     "birthDate" DATETIME NOT NULL,
+    "age" INTEGER NOT NULL,
     "motherName" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "deleted" BOOLEAN NOT NULL DEFAULT false,

@@ -16,6 +16,7 @@ model User {
   phone      String
   cpf        String   @unique
   birthDate  DateTime
+  age        Int
   motherName String
   status     String
   deleted    Boolean  @default(false)

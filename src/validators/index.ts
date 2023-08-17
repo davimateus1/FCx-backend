@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const createUserValidator = z.object({
+const userValidator = z.object({
   name: z.string(),
   login: z.string(),
   password: z.string(),
@@ -11,3 +11,25 @@ export const createUserValidator = z.object({
   motherName: z.string(),
   status: z.enum(['active', 'inactive', 'blocked']),
 })
+
+const userQueryValidator = z.object({
+  search: z.string().optional(),
+  minAge: z.string().optional(),
+  maxAge: z.string().optional(),
+  date: z.string().optional(),
+})
+
+const idValidator = z.object({
+  id: z.string(),
+})
+
+const softDeleteUserBodyValidator = z.object({
+  status: z.enum(['active', 'inactive', 'blocked']),
+})
+
+export const validators = {
+  idValidator,
+  userValidator,
+  userQueryValidator,
+  softDeleteUserBodyValidator,
+}
