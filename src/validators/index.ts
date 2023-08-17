@@ -27,9 +27,21 @@ const softDeleteUserBodyValidator = z.object({
   status: z.enum(['active', 'inactive', 'blocked']),
 })
 
+const loginValidator = z.object({
+  login: z.string(),
+  password: z.string(),
+})
+
+const recoverPasswordValidator = z.object({
+  email: z.string().email(),
+  password: z.string(),
+})
+
 export const validators = {
   idValidator,
   userValidator,
+  loginValidator,
   userQueryValidator,
+  recoverPasswordValidator,
   softDeleteUserBodyValidator,
 }

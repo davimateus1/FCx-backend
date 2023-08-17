@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import prisma from '../database/client'
 import { validators } from '../validators'
 import { middlewares } from '../middlewares'
+import bcrypt from 'bcrypt'
 
 export async function usersRoutes(app: FastifyInstance) {
   const { checkCpfExists, checkEmailExists, checkLoginExists } = middlewares
@@ -14,7 +15,10 @@ export async function usersRoutes(app: FastifyInstance) {
 
   app.post(
     '/',
-    { preHandler: [checkCpfExists, checkEmailExists, checkLoginExists] },
+    {
+      preHandler: [checkCpfExists, checkEmailExists, checkLoginExists],
+    },
+
     async (request, reply) => {
       const {
         name,
@@ -30,12 +34,14 @@ export async function usersRoutes(app: FastifyInstance) {
 
       const age = new Date().getFullYear() - new Date(birthDate).getFullYear()
 
+      const hashedPassword = await bcrypt.hash(password, 10)
+
       await prisma.user.create({
         data: {
           name,
           email,
           login,
-          password,
+          password: hashedPassword,
           motherName,
           cpf,
           birthDate,
@@ -110,13 +116,15 @@ export async function usersRoutes(app: FastifyInstance) {
       phone,
     } = userValidator.parse(request.body)
 
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     await prisma.user.update({
       where: { id: Number(id) },
       data: {
         name,
         email,
         login,
-        password,
+        password: hashedPassword,
         motherName,
         cpf,
         birthDate,
