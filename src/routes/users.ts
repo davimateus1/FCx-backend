@@ -104,7 +104,7 @@ export async function usersRoutes(app: FastifyInstance) {
       },
     })
 
-    return reply.send(users).status(200)
+    return reply.status(200).send(users)
   })
 
   app.patch('/:id', async (request, reply) => {
