@@ -56,13 +56,16 @@ export async function usersRoutes(app: FastifyInstance) {
   )
 
   app.get('/', async (request, reply) => {
-    const { search, maxAge, minAge, date } = userQueryValidator.parse(
-      request.query,
-    )
+    const { search, maxAge, minAge, date, status, page, pageSize } =
+      userQueryValidator.parse(request.query)
+
+    const offset = (Number(page) - 1) * Number(pageSize)
 
     const users = await prisma.user.findMany({
+      take: Number(pageSize),
+      skip: offset,
+      orderBy: { id: 'asc' },
       where: {
-        deleted: false,
         ...(search && {
           OR: [
             {
@@ -94,6 +97,9 @@ export async function usersRoutes(app: FastifyInstance) {
         },
         updatedAt: {
           ...(date && { equals: new Date(date) }),
+        },
+        status: {
+          ...(status && { equals: status }),
         },
       },
     })

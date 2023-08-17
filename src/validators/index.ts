@@ -17,6 +17,9 @@ const userQueryValidator = z.object({
   minAge: z.string().optional(),
   maxAge: z.string().optional(),
   date: z.string().optional(),
+  status: z.enum(['active', 'inactive', 'blocked']).optional(),
+  page: z.string().optional(),
+  pageSize: z.string().optional(),
 })
 
 const idValidator = z.object({

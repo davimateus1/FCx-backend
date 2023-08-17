@@ -8,9 +8,7 @@ import { Document, Paragraph, Packer, Table, TableRow, TableCell } from 'docx'
 
 export async function usersDocumentsRoutes(app: FastifyInstance) {
   app.get('/xlsx', async (_, reply) => {
-    const users = await prisma.user.findMany({
-      where: { deleted: false },
-    })
+    const users = await prisma.user.findMany()
 
     const workbook = new ExcelJS.Workbook()
     const worksheet = workbook.addWorksheet('Users')
@@ -57,9 +55,7 @@ export async function usersDocumentsRoutes(app: FastifyInstance) {
   })
 
   app.get('/pdf', async (_, reply) => {
-    const users = await prisma.user.findMany({
-      where: { deleted: false },
-    })
+    const users = await prisma.user.findMany()
 
     const pdf = new PDFDocument()
 
@@ -91,9 +87,7 @@ export async function usersDocumentsRoutes(app: FastifyInstance) {
   })
 
   app.get('/docx', async (_, reply) => {
-    const users = await prisma.user.findMany({
-      where: { deleted: false },
-    })
+    const users = await prisma.user.findMany()
 
     const tableRows = users.map((user) => [
       { val: `Id: ${user.id}` },
