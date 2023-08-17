@@ -1,8 +1,7 @@
 import fastify from 'fastify'
-import { usersRoutes } from './routes/users'
+import { routes } from './routes'
 
 const app = fastify()
-
-app.register(usersRoutes, { prefix: '/users' })
+routes(app)
 
 export default app
