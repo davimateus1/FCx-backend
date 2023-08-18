@@ -62,8 +62,8 @@ export async function usersRoutes(app: FastifyInstance) {
     const offset = (Number(page) - 1) * Number(pageSize)
 
     const users = await prisma.user.findMany({
-      take: Number(pageSize),
-      skip: offset,
+      take: Number(pageSize) || 10,
+      skip: offset || 0,
       orderBy: { id: 'asc' },
       where: {
         ...(search && {
