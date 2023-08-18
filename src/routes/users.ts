@@ -61,6 +61,12 @@ export async function usersRoutes(app: FastifyInstance) {
 
     const offset = (Number(page) - 1) * Number(pageSize)
 
+    const startDate = new Date(date ?? '')
+    startDate.setUTCHours(0, 0, 0, 0)
+
+    const endDate = new Date(date ?? '')
+    endDate.setUTCHours(23, 59, 59, 999)
+
     const users = await prisma.user.findMany({
       take: Number(pageSize) || 10,
       skip: offset || 0,
@@ -89,15 +95,23 @@ export async function usersRoutes(app: FastifyInstance) {
           ...(minAge && { gte: Number(minAge) }),
           ...(maxAge && { lte: Number(maxAge) }),
         },
-        birthDate: {
-          ...(date && { equals: new Date(date) }),
-        },
-        createdAt: {
-          ...(date && { equals: new Date(date) }),
-        },
-        updatedAt: {
-          ...(date && { equals: new Date(date) }),
-        },
+        OR: [
+          {
+            birthDate: {
+              ...(date && { gte: startDate, lte: endDate }),
+            },
+          },
+          {
+            createdAt: {
+              ...(date && { gte: startDate, lte: endDate }),
+            },
+          },
+          {
+            updatedAt: {
+              ...(date && { gte: startDate, lte: endDate }),
+            },
+          },
+        ],
         status: {
           ...(status && { equals: status }),
         },
