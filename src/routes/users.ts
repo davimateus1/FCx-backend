@@ -95,23 +95,13 @@ export async function usersRoutes(app: FastifyInstance) {
           ...(minAge && { gte: Number(minAge) }),
           ...(maxAge && { lte: Number(maxAge) }),
         },
-        OR: [
-          {
-            birthDate: {
-              ...(date && { gte: startDate, lte: endDate }),
-            },
-          },
-          {
-            createdAt: {
-              ...(date && { gte: startDate, lte: endDate }),
-            },
-          },
-          {
-            updatedAt: {
-              ...(date && { gte: startDate, lte: endDate }),
-            },
-          },
-        ],
+        ...(date && {
+          OR: [
+            { birthDate: { gte: startDate, lte: endDate } },
+            { createdAt: { gte: startDate, lte: endDate } },
+            { updatedAt: { gte: startDate, lte: endDate } },
+          ],
+        }),
         status: {
           ...(status && { equals: status }),
         },
