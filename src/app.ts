@@ -5,7 +5,6 @@ import cors from '@fastify/cors'
 const app = fastify()
 
 app.register(cors, { origin: '*' })
-
 routes(app)
 
 export default app

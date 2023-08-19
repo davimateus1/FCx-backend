@@ -1,12 +1,24 @@
 import { z } from 'zod'
 
-const userValidator = z.object({
+const createUserValidator = z.object({
   name: z.string(),
   login: z.string(),
   password: z.string(),
   email: z.string().email(),
   phone: z.string(),
   cpf: z.string(),
+  birthDate: z.string(),
+  motherName: z.string(),
+  status: z.enum(['active', 'inactive', 'blocked']),
+})
+
+const editUserValidator = z.object({
+  name: z.string(),
+  login: z.string(),
+  email: z.string().email(),
+  phone: z.string(),
+  cpf: z.string(),
+  age: z.number(),
   birthDate: z.string(),
   motherName: z.string(),
   status: z.enum(['active', 'inactive', 'blocked']),
@@ -42,9 +54,10 @@ const recoverPasswordValidator = z.object({
 
 export const validators = {
   idValidator,
-  userValidator,
   loginValidator,
+  editUserValidator,
   userQueryValidator,
+  createUserValidator,
   recoverPasswordValidator,
   softDeleteUserBodyValidator,
 }

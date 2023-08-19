@@ -7,10 +7,11 @@ import bcrypt from 'bcrypt'
 export async function usersRoutes(app: FastifyInstance) {
   const { checkCpfExists, checkEmailExists, checkLoginExists } = middlewares
   const {
-    softDeleteUserBodyValidator,
     idValidator,
-    userValidator,
+    editUserValidator,
     userQueryValidator,
+    createUserValidator,
+    softDeleteUserBodyValidator,
   } = validators
 
   app.post(
@@ -18,7 +19,6 @@ export async function usersRoutes(app: FastifyInstance) {
     {
       preHandler: [checkCpfExists, checkEmailExists, checkLoginExists],
     },
-
     async (request, reply) => {
       const {
         name,
@@ -30,7 +30,7 @@ export async function usersRoutes(app: FastifyInstance) {
         birthDate,
         status,
         phone,
-      } = userValidator.parse(request.body)
+      } = createUserValidator.parse(request.body)
 
       const age = new Date().getFullYear() - new Date(birthDate).getFullYear()
 
@@ -128,15 +128,26 @@ export async function usersRoutes(app: FastifyInstance) {
       name,
       email,
       login,
-      password,
       motherName,
       cpf,
       birthDate,
       status,
       phone,
-    } = userValidator.parse(request.body)
+      age,
+    } = editUserValidator.parse(request.body)
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const existingUsers = await prisma.user.findMany({
+      where: {
+        NOT: { id: Number(id) },
+        OR: [{ cpf }, { login }, { email }],
+      },
+    })
+
+    if (existingUsers.length > 0) {
+      return reply.status(400).send({
+        message: 'CPF, login or email already exists.',
+      })
+    }
 
     await prisma.user.update({
       where: { id: Number(id) },
@@ -144,12 +155,12 @@ export async function usersRoutes(app: FastifyInstance) {
         name,
         email,
         login,
-        password: hashedPassword,
         motherName,
         cpf,
         birthDate,
         status,
         phone,
+        age,
       },
     })
 
