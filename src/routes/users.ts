@@ -111,6 +111,16 @@ export async function usersRoutes(app: FastifyInstance) {
     return reply.status(200).send(users)
   })
 
+  app.get('/:id', async (request, reply) => {
+    const { id } = idValidator.parse(request.params)
+
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+    })
+
+    return reply.status(200).send(user)
+  })
+
   app.patch('/:id', async (request, reply) => {
     const { id } = idValidator.parse(request.params)
 
@@ -153,6 +163,15 @@ export async function usersRoutes(app: FastifyInstance) {
     await prisma.user.update({
       where: { id: Number(id) },
       data: { status },
+    })
+
+    return reply.status(204).send()
+  })
+
+  app.delete('/all', async (_, reply) => {
+    await prisma.user.updateMany({
+      where: { status: 'active' },
+      data: { status: 'inactive' },
     })
 
     return reply.status(204).send()
