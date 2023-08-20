@@ -56,16 +56,16 @@ export async function usersRoutes(app: FastifyInstance) {
   )
 
   app.get('/', async (request, reply) => {
-    const { search, maxAge, minAge, date, status, page } =
+    const { search, maxAge, minAge, from, to, status, page } =
       userQueryValidator.parse(request.query)
 
     const pageSize = 10
     const offset = (Number(page) - 1) * Number(pageSize)
 
-    const startDate = new Date(date ?? '')
+    const startDate = new Date(from ?? '')
     startDate.setUTCHours(0, 0, 0, 0)
 
-    const endDate = new Date(date ?? '')
+    const endDate = new Date(to ?? '')
     endDate.setUTCHours(23, 59, 59, 999)
 
     const query = {
@@ -93,13 +93,14 @@ export async function usersRoutes(app: FastifyInstance) {
           ...(minAge && { gte: Number(minAge) }),
           ...(maxAge && { lte: Number(maxAge) }),
         },
-        ...(date && {
-          OR: [
-            { birthDate: { gte: startDate, lte: endDate } },
-            { createdAt: { gte: startDate, lte: endDate } },
-            { updatedAt: { gte: startDate, lte: endDate } },
-          ],
-        }),
+        ...(from &&
+          to && {
+            OR: [
+              { birthDate: { gte: startDate, lte: endDate } },
+              { createdAt: { gte: startDate, lte: endDate } },
+              { updatedAt: { gte: startDate, lte: endDate } },
+            ],
+          }),
         status: {
           ...(status && { equals: status }),
         },
