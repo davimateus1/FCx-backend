@@ -137,17 +137,10 @@ export async function usersRoutes(app: FastifyInstance) {
   app.patch('/:id', async (request, reply) => {
     const { id } = idValidator.parse(request.params)
 
-    const {
-      name,
-      email,
-      login,
-      motherName,
-      cpf,
-      birthDate,
-      status,
-      phone,
-      age,
-    } = editUserValidator.parse(request.body)
+    const { name, email, login, motherName, cpf, birthDate, status, phone } =
+      editUserValidator.parse(request.body)
+
+    const newAge = new Date().getFullYear() - new Date(birthDate).getFullYear()
 
     const existingUsers = await prisma.user.findMany({
       where: {
@@ -173,7 +166,7 @@ export async function usersRoutes(app: FastifyInstance) {
         birthDate,
         status,
         phone,
-        age,
+        age: newAge,
       },
     })
 

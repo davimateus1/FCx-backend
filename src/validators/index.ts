@@ -18,7 +18,6 @@ const editUserValidator = z.object({
   email: z.string().email(),
   phone: z.string(),
   cpf: z.string(),
-  age: z.number(),
   birthDate: z.string(),
   motherName: z.string(),
   status: z.enum(['active', 'inactive', 'blocked']),
