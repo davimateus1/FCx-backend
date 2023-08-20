@@ -49,6 +49,8 @@ const loginValidator = z.object({
 
 const recoverPasswordValidator = z.object({
   email: z.string().email(),
+  login: z.string(),
+  cpf: z.string(),
   password: z.string(),
 })
 

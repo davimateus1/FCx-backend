@@ -59,10 +59,12 @@ export async function usersAuthRoutes(app: FastifyInstance) {
   })
 
   app.patch('/recover-password', async (request, reply) => {
-    const { email, password } = recoverPasswordValidator.parse(request.body)
+    const { email, login, cpf, password } = recoverPasswordValidator.parse(
+      request.body,
+    )
 
     const user = await prisma.user.findFirst({
-      where: { email },
+      where: { email, login, cpf },
     })
 
     if (!user) {
