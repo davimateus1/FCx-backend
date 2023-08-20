@@ -36,7 +36,9 @@ export async function usersDocumentsRoutes(app: FastifyInstance) {
         user.password,
         user.motherName,
         user.cpf,
-        user.birthDate.toISOString(),
+        user.birthDate.toLocaleDateString('pt-BR', {
+          timeZone: 'UTC',
+        }),
         user.status,
         user.phone,
         user.age,
@@ -71,7 +73,14 @@ export async function usersDocumentsRoutes(app: FastifyInstance) {
       pdf.fontSize(15).text(`Senha: ${user.password}`)
       pdf.fontSize(15).text(`Nome da Mãe: ${user.motherName}`)
       pdf.fontSize(15).text(`CPF: ${user.cpf}`)
-      pdf.fontSize(15).text(`Data de Nascimento: ${user.birthDate}`)
+      pdf.fontSize(15).text(
+        `Data de Nascimento: ${new Date(user.birthDate).toLocaleDateString(
+          'pt-BR',
+          {
+            timeZone: 'UTC',
+          },
+        )}`,
+      )
       pdf.fontSize(15).text(`Status: ${user.status}`)
       pdf.fontSize(15).text(`Telefone: ${user.phone}`)
       pdf.fontSize(15).text(`Idade: ${user.age}`)
@@ -97,7 +106,14 @@ export async function usersDocumentsRoutes(app: FastifyInstance) {
       { val: `Senha: ${user.password}` },
       { val: `Nome da mãe: ${user.motherName}` },
       { val: `CPF: ${user.cpf}` },
-      { val: `Data de nascimento: ${user.birthDate}` },
+      {
+        val: `Data de nascimento: ${new Date(user.birthDate).toLocaleDateString(
+          'pt-BR',
+          {
+            timeZone: 'UTC',
+          },
+        )}`,
+      },
       { val: `Status: ${user.status}` },
       { val: `Telefone: ${user.phone}` },
       { val: `Idade: ${user.age}` },

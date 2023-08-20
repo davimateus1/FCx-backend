@@ -20,6 +20,12 @@ export async function usersAuthRoutes(app: FastifyInstance) {
       return reply.status(404).send({ message: 'User not found' })
     }
 
+    if (user.status === 'inactive' || user.status === 'blocked') {
+      return reply.status(444).send({
+        message: 'User is inactive or blocked',
+      })
+    }
+
     const passwordMatch = await bcrypt.compare(password, user.password)
 
     if (!passwordMatch) {
