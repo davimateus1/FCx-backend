@@ -40,9 +40,9 @@ yarn dev
 
 ## Teste de Autenticação
 
-De acordo com os requisitos do teste, a tela de criação de usuário deve ser redirecionada para a tela de usuários (para isso acontecer é necessário estar autenticado em alguma conta obrigatoriamente). Para facilitar o teste, foi criada uma conta de teste para a FCx Labs. Ao abrir a tela de login (Front-end), informe as seguintes credenciais:
+De acordo com os requisitos do teste, a tela de criação de usuário deve ser redirecionada para a tela de usuários (para isso acontecer é necessário estar autenticado em alguma conta obrigatoriamente). Ao abrir a tela de login (Front-end), informe as seguintes credenciais:
 
-- **Login:** fcxlabs12
-- **Senha:** fcx@123
+- **Login:** labs12
+- **Senha:** labs@123
 
 Se você tiver alguma dúvida ou encontrar problemas, não hesite em entrar em contato. 🚀👩‍💻
